@@ -6,17 +6,18 @@ static void get_current_time( struct tm* __timeholder )
 {
     time_t __rawTimeSec = time(0);
     struct tm* __tmp = localtime(&__rawTimeSec);
-    __timeholder->tm_hour = __tmp->tm_hour;
-    __timeholder->tm_isdst = __tmp->tm_isdst;
-    __timeholder->tm_mday = __tmp->tm_mday;
-    __timeholder->tm_min = __tmp->tm_min;
-    __timeholder->tm_mon = __tmp->tm_mon + LIB_MONTH_OFFSET;
-    __timeholder->tm_sec = __tmp->tm_sec;
-    __timeholder->tm_wday = __tmp->tm_wday + LIB_DAY_OFFSET;
-    __timeholder->tm_yday = __tmp->tm_yday + LIB_DAY_OFFSET;
-    __timeholder->tm_year = __tmp->tm_year + LIB_YEAR_OFFSET;
-    __timeholder->tm_gmtoff = __tmp->tm_gmtoff;
-    __timeholder->tm_zone = __tmp->tm_zone;
+
+    if ( __tmp )
+    {
+        *__timeholder = *__tmp;
+        // memcpy(__timeholder, __tmp, sizeof(struct tm));
+    }
+
+    /* using offset to set proper values */
+    __timeholder->tm_mon =+ LIB_MONTH_OFFSET;
+    __timeholder->tm_wday =+ LIB_DAY_OFFSET;
+    __timeholder->tm_yday =+ LIB_DAY_OFFSET;
+    __timeholder->tm_year =+ LIB_YEAR_OFFSET;
 }
 
 
@@ -98,6 +99,12 @@ static void month_data_gen(  )
     }
 
     //printf("Struct addr: %p\nhm: %p\ndm: %p\nmm: %p\nsm: %p\n", &todayDate, &todayDate.tm_hour, &todayDate.tm_mday, &todayDate.tm_min, &todayDate.tm_mon);
+}
+
+
+static void set_event()
+{
+    //
 }
 
 
